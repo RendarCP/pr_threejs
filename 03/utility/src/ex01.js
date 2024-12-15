@@ -1,64 +1,67 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 // ----- 주제: AxesHelper, GridHelper
 
 export default function example() {
-	// Renderer
-	const canvas = document.querySelector('#three-canvas');
-	const renderer = new THREE.WebGLRenderer({
-		canvas,
-		antialias: true
-	});
-	renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+  // Renderer
+  const canvas = document.querySelector("#three-canvas");
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
 
-	// Scene
-	const scene = new THREE.Scene();
+  // Scene
+  const scene = new THREE.Scene();
 
-	// Camera
-	const camera = new THREE.PerspectiveCamera(
-		75,
-		window.innerWidth / window.innerHeight,
-		0.1,
-		1000
-	);
-	camera.position.z = 5;
-	scene.add(camera);
+  // Camera
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 5;
+  scene.add(camera);
 
-	const light = new THREE.DirectionalLight(0xffffff, 1);
-	light.position.x = 1;
-	light.position.z = 2;
-	scene.add(light);
+  const ambientLight = new THREE.AmbientLight("white", 0.5);
+  scene.add(ambientLight);
 
-	// Mesh
-	const geometry = new THREE.BoxGeometry(1, 1, 1);
-	const material = new THREE.MeshStandardMaterial({
-		color: 'seagreen'
-	});
-	const mesh = new THREE.Mesh(geometry, material);
-	scene.add(mesh);
+  const light = new THREE.DirectionalLight("white", 1);
+  light.position.x = 1;
+  light.position.z = 2;
+  scene.add(light);
 
-	// 그리기
-	const clock = new THREE.Clock();
+  // Mesh
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshStandardMaterial({
+    color: "seagreen",
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
 
-	function draw() {
-		const time = clock.getElapsedTime();
+  // 그리기
+  const clock = new THREE.Clock();
 
-		mesh.rotation.y = time;
+  function draw() {
+    const time = clock.getElapsedTime();
 
-		renderer.render(scene, camera);
-		renderer.setAnimationLoop(draw);
-	}
+    mesh.rotation.y = time;
 
-	function setSize() {
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		renderer.render(scene, camera);
-	}
+    renderer.render(scene, camera);
+    renderer.setAnimationLoop(draw);
+  }
 
-	// 이벤트
-	window.addEventListener('resize', setSize);
+  function setSize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.render(scene, camera);
+  }
 
-	draw();
+  // 이벤트
+  window.addEventListener("resize", setSize);
+
+  draw();
 }
